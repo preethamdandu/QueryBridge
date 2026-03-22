@@ -1,3 +1,7 @@
+scalar DateTime
+scalar JSON
+scalar UUID
+
 type HealthStatus {
   ok: Boolean!
   service: String!
@@ -6,6 +10,7 @@ type HealthStatus {
 type Viewer {
   id: ID!
   email: String!
+  createdAt: DateTime
 }
 
 type LLMResult {
@@ -28,6 +33,6 @@ input LLMQueryInput {
 type Query {
   health: HealthStatus
   viewer: Viewer @auth
-  llmQuery(input: LLMQueryInput!): LLMResult @complexity(value: 100)
-  analyticsSummary(range: String!): AnalyticsSummary @complexity(value: 50)
+  llmQuery(input: LLMQueryInput!): LLMResult @auth @complexity(value: 100) @rateLimit(max: 30, windowSeconds: 60)
+  analyticsSummary(range: String!): AnalyticsSummary @auth @complexity(value: 50)
 }

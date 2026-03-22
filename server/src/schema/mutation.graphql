@@ -1,6 +1,22 @@
+type AuthTokens {
+  accessToken: String!
+  refreshToken: String!
+}
+
 type Preference {
+  id: ID!
   key: String!
   value: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 input PreferenceInput {
@@ -10,5 +26,10 @@ input PreferenceInput {
 }
 
 type Mutation {
+  register(input: RegisterInput!): AuthTokens!
+  login(input: LoginInput!): AuthTokens!
+  refreshToken(refreshToken: String!): AuthTokens!
+  revokeSession(sessionId: String!): Boolean! @auth
+
   upsertPreference(input: PreferenceInput!): Preference! @auth @complexity(value: 10)
 }
