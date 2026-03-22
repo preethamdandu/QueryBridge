@@ -2,6 +2,7 @@ import { mapSchema, MapperKind } from "@graphql-tools/utils";
 import { GraphQLError, defaultFieldResolver } from "graphql";
 import type { GraphQLSchema } from "graphql";
 import type { GatewayContext } from "../context";
+import { applyRateLimitDirective } from "../middleware/rate-limiter";
 
 function hasDirective(
   directives: readonly { name: { value: string } }[] | undefined,
@@ -14,7 +15,7 @@ function hasDirective(
   return directives.some((directive) => directive.name.value === directiveName);
 }
 
-export function applyGatewayDirectives(schema: GraphQLSchema): GraphQLSchema {
+function applyAuthDirective(schema: GraphQLSchema): GraphQLSchema {
   return mapSchema(schema, {
     [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
       if (!hasDirective(fieldConfig.astNode?.directives, "auth")) {
@@ -35,4 +36,10 @@ export function applyGatewayDirectives(schema: GraphQLSchema): GraphQLSchema {
       return fieldConfig;
     }
   });
+}
+
+export function applyGatewayDirectives(schema: GraphQLSchema): GraphQLSchema {
+  let result = applyAuthDirective(schema);
+  result = applyRateLimitDirective(result);
+  return result;
 }
