@@ -1,0 +1,5 @@
+directive @auth on FIELD_DEFINITION
+
+directive @rateLimit(max: Int!, windowSeconds: Int!) on FIELD_DEFINITION
+
+directive @complexity(value: Int!) on FIELD_DEFINITION

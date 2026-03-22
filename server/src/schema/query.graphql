@@ -1,0 +1,33 @@
+type HealthStatus {
+  ok: Boolean!
+  service: String!
+}
+
+type Viewer {
+  id: ID!
+  email: String!
+}
+
+type LLMResult {
+  text: String!
+  provider: String!
+  model: String!
+}
+
+type AnalyticsSummary {
+  range: String!
+  totalQueries: Int!
+  errorRate: Float!
+  p95Ms: Int!
+}
+
+input LLMQueryInput {
+  prompt: String!
+}
+
+type Query {
+  health: HealthStatus
+  viewer: Viewer @auth
+  llmQuery(input: LLMQueryInput!): LLMResult @complexity(value: 100)
+  analyticsSummary(range: String!): AnalyticsSummary @complexity(value: 50)
+}

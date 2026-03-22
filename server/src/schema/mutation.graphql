@@ -1,0 +1,14 @@
+type Preference {
+  key: String!
+  value: String!
+}
+
+input PreferenceInput {
+  key: String!
+  value: String!
+  idempotencyKey: String!
+}
+
+type Mutation {
+  upsertPreference(input: PreferenceInput!): Preference! @auth @complexity(value: 10)
+}
