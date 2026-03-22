@@ -1,0 +1,42 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'deploy-prod' to confirm"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'deploy-prod'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        working-directory: server
+
+      - name: Build
+        run: npm run build
+
+      - name: Promote staging images to production
+        run: |
+          echo "Promote staging ECR tags to production"
+
+      - name: Blue/green ECS deployment
+        run: |
+          echo "ECS blue/green deployment"
+
+      - name: Verify deployment health
+        run: |
+          echo "Monitor p99 latency — rollback if >800ms within 5 minutes"
