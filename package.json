@@ -1,0 +1,29 @@
+{
+  "name": "querybridge",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace server",
+    "dev:gateway": "npm run dev --workspace server",
+    "dev:query-service": "npm run dev --workspace services/query-service",
+    "dev:auth-service": "npm run dev --workspace services/auth-service",
+    "dev:analytics-service": "npm run dev --workspace services/analytics-service",
+    "dev:llm-router": "npm run dev --workspace services/llm-router-service",
+    "build": "npm run build --workspace server && npm run build --workspace services/query-service && npm run build --workspace services/auth-service && npm run build --workspace services/analytics-service && npm run build --workspace services/llm-router-service",
+    "test": "vitest run",
+    "test:integration": "vitest run tests/integration",
+    "test:smoke:http": "bash ./scripts/smoke-http.sh",
+    "db:migrate": "echo \"Migrations are not configured yet\""
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

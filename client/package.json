@@ -1,0 +1,9 @@
+{
+  "name": "@querybridge/client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"Client app not scaffolded yet\"",
+    "build": "echo \"Client app not scaffolded yet\""
+  }
+}
