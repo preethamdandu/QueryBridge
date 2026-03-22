@@ -15,10 +15,12 @@
     "dev:analytics-service": "npm run dev --workspace services/analytics-service",
     "dev:llm-router": "npm run dev --workspace services/llm-router-service",
     "build": "npm run build --workspace server && npm run build --workspace services/query-service && npm run build --workspace services/auth-service && npm run build --workspace services/analytics-service && npm run build --workspace services/llm-router-service",
-    "test": "vitest run",
+    "db:generate": "npx prisma generate --schema server/prisma/schema.prisma",
+    "db:migrate": "npx prisma migrate dev --schema server/prisma/schema.prisma",
+    "db:migrate:deploy": "npx prisma migrate deploy --schema server/prisma/schema.prisma",
+    "test": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
-    "test:smoke:http": "bash ./scripts/smoke-http.sh",
-    "db:migrate": "echo \"Migrations are not configured yet\""
+    "test:smoke:http": "bash ./scripts/smoke-http.sh"
   },
   "devDependencies": {
     "vitest": "^3.2.4"
